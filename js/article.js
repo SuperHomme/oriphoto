@@ -1,48 +1,32 @@
-// choses à faire
-// 1 - créer un structure DOM reprenant tous les éléments card
-// 2 - insérer une variable dans les éléments du DOM
-// 3 - lier la variable aux éléments mis à dispo par l'API
-// 4 - insérer cela dans une boucle pour générer autant de cartes que d'articles
-
+// création d'une constante qui permet de raccourcir le code
 const apiUrl = "http://localhost:3000"
+
+// la méthode fetch renvoi toujours un promesse / then s'en sert / la méthode json renvoie elle même une promesse
 fetch(`${apiUrl}/api/cameras`).then(response=>response.json())
-.then((cameras)=>{
-//    console.log(cameras)
-for (let camera of cameras){
-    console.log(camera)
+
+// boucle apparaisant dans la console pour afficher les objets camera contenus dans l'objet parent cameras
+.then(
+(cameras)=> // on baptise l'objet response "cameras" grâce au then
+{
+// identification du lieu d'injection
+let cardCreation = document.getElementById('card-creation');
+for (let camera of cameras) // on baptise les sous-objets camera
+{
+// injection du code
+const block = document.createElement("div");
+block.className = "col-sm-6"
+block.innerHTML = `
+<div class="card">
+<div class="card-header">${camera.name}</div>
+<img class="card-img-top" src="${camera.imageUrl}" alt="Card image cap">
+<div class="card-body"><p class="card-text">${camera.lenses}</p>
+<p class="card-text">${camera.price / 100} €</p>
+<p class="card-text">${camera.description}</p>
+<a href="pages/product.html?product=${camera._id}" class="btn btn-primary">Détails</a>
+</div></div>`;
+cardCreation.appendChild(block);
 }
 })
 
-// déclaration de variables : utile ?
-let cameraName = camera.name;
-let cameraPrice = camera.price
-let cameraDescritpion = camera.description;
-let cameraLenses = camera.lenses;
-let cameaImageUrl = camera.imageUrl;
-
-// création d'une class en attendant de savoir importer depuis l'API
-class Camera
-{
-constructor(name, price, description, lenses, imageUrl)
-{
-this.name = name;
-this.price = price;
-this.descritpion = description;
-this.lenses = lenses;
-this.imageUrl = imageUrl;
-}
-}
-
-// avant utilisation de la boucle (génération dynamique), test pour un article simple
-document.getElementsByClassName("acameraname").innerText = `Nom : ${aCamera.price}`;
-document.getElementsByClassName("acameraprice").innerText = `Prix : ${aCamera.price}`;
-
-// boucle pour chaque article contenu dans l'array articles
-for (let camera of cameras)
-{
-camera.name
-camera.price
-camera.description
-camera.lenses
-camera.imageUrl
-}
+// let camera_id_json = JSON.stringify(${camera._id};
+// sessionStorage.setItem("_id",camera_id_json);
