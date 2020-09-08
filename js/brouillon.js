@@ -44,3 +44,48 @@ let cameraPrice = camera.price
 let cameraDescritpion = camera.description;
 let cameraLenses = camera.lenses;
 let cameaImageUrl = camera.imageUrl;
+
+// bouton plus et mois
+//bouton ajouter
+let plusInCartButton = document.getElementById("plus-in-cart"); // on récupère le bouton sur lequel on veut détecter le clic
+plusInCartButton.addEventListener('click', function(event) { // on écoute l'événement click sur le bouton
+event.preventDefault();
+inCart++; // incrementation de 1 sur la variable
+});
+
+//bouton retirer
+let minusInCartButton = document.getElementById("minus-in-cart"); // on récupère le bouton sur lequel on veut détecter le clic
+minusInCartButton.addEventListener('click', function(event) { // on écoute l'événement click sur le bouton
+event.preventDefault();
+inCart--; // décrementation de 1 sur la variable
+});
+
+inCartCount.innerHTML = inCart; // on injecte le compteur dans le code HTML
+
+// tentative bouton plus ou moins
+<div class="row d-flex justify-content-between">
+<input type="button" class="btn btn-primary col-3" value="Retirer" id="minus-in-cart" onclick="minus()">
+<input type="button" class="btn btn-primary col-3" value="Ajouter" id="plus-in-cart" onclick="plus()">
+<a href="cart.html" class="btn btn-primary col-3">Panier</a>
+</div>
+<input type="text" value="${inCart}" id="in-cart-count">
+</div>
+`
+;
+cardCreation.appendChild(block);
+
+console.log(inCart);
+
+let inCartCount = document.getElementById('in-cart-count'); // on créé un compteur
+
+function plus(){
+inCart++;
+inCartCount.value = inCart;
+}
+
+function minus(){
+if (count > 1) {
+inCart--;
+inCartCount.value = inCart;
+}
+}
