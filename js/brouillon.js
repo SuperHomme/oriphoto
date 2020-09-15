@@ -89,3 +89,21 @@ inCart--;
 inCartCount.value = inCart;
 }
 }
+
+//bouton ajouter
+let plusButton = document.getElementById("plus-in-cart"); // on récupère le bouton sur lequel on veut détecter le clic
+plusButton.addEventListener('click', function(event) { // on écoute l'événement click sur le bouton
+    event.preventDefault();
+    inCart++; // incrementation de 1 sur la variable
+    inCartCount.value = inCart;
+    localStorage.setItem(camera._id,inCart);
+});
+
+//bouton retirer
+let minusButton = document.getElementById("minus-in-cart"); // on récupère le bouton sur lequel on veut détecter le clic
+minusButton.addEventListener('click', function(event) { // on écoute l'événement click sur le bouton
+    event.preventDefault();
+    inCart--; // décrementation de 1 sur la variable
+    inCartCount.value = inCart;
+    localStorage.setItem(camera._id,inCart);
+});

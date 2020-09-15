@@ -1,5 +1,7 @@
 let cartList = document.getElementById('cart-list'); // localisation du lieu d'injection
 
+let totalCost = 0;
+
 const apiUrl = "http://localhost:3000";
 fetch(`${apiUrl}/api/cameras`).then(response=>response.json())
 
@@ -9,8 +11,13 @@ fetch(`${apiUrl}/api/cameras`).then(response=>response.json())
 
 for (let camera of cameras)
 {
-    // injection du code
     let inCart = localStorage.getItem(camera._id);
+    // verfication de l'existence du produit en quantité > 1
+    if (isNaN(inCart) || inCart <= 0) {
+        console.log("manque un produit")
+    }
+    else {
+    // generation dynamique de la liste d'article du panier
     const block = document.createElement("div");
     block.className ="row";
     block.innerHTML =
@@ -22,12 +29,11 @@ for (let camera of cameras)
     <p class="col-2">${inCart * camera.price / 100} €</p>
     `
     ;
-    cartList.appendChild(block);
+    cartList.appendChild(block);// injection du code
+    totalCost = totalCost + ( inCart * camera.price / 100)
+    }
 }
-});
-
 // cout total
-let totalCost = 770;
 let totalCostPlace = document.getElementById('total-cost'); // localisation du lieu d'injection
 const block = document.createElement("div");
 block.className ="row d-flex justify-content-end";
@@ -37,3 +43,4 @@ block.innerHTML =
 `
 ;
 totalCostPlace.appendChild(block);
+});
