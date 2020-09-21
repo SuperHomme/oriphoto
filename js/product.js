@@ -41,6 +41,8 @@ let inCartCount = document.getElementById('in-cart-count'); // on créé un comp
 
 inCartCount.addEventListener('change', function(event) { // on écoute l'événement click sur le bouton
     event.preventDefault();
+    const select = document.getElementById("selectLense").value;
+    console.log("lentille : ", select);
     localStorage.setItem(camera._id,inCartCount.value);
 });
 

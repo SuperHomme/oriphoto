@@ -8,15 +8,13 @@ fetch(`${apiUrl}/api/cameras`).then(response=>response.json())
 .then(
 (cameras)=>
 {
+    totalCost = 0;
 
 for (let camera of cameras)
 {
     let inCart = localStorage.getItem(camera._id);
     // verfication de l'existence du produit en quantité > 1
-    if (isNaN(inCart) || inCart <= 0) {
-        console.log("manque un produit")
-    }
-    else {
+    if (!isNaN(inCart) && inCart > 0) {
     // generation dynamique de la liste d'article du panier
     const block = document.createElement("div");
     block.className ="row";
