@@ -24,11 +24,11 @@ newCard = newCard.appendChild(newDiv);
 // 
 for (let camera of cameras)
 {
-let newDiv = document.createElement("div");
-// identification du lieu d'injection
-let cardCreation = document.getElementById('card-creation');
-// injection du code
-cardCreation.innerHTML = '<div class="col-sm-6"><div class="card"><div class="card-header">`${camera.name}`</div><img class="card-img-top" src="#" alt="Card image cap"><div class="card-body"><p class="card-text">Lenses</p><p class="card-text">Price</p><p class="card-text">Description</p><a href="#" class="btn btn-primary">Détails</a></div></div></div>';
+    let newDiv = document.createElement("div");
+    // identification du lieu d'injection
+    let cardCreation = document.getElementById('card-creation');
+    // injection du code
+    cardCreation.innerHTML = '<div class="col-sm-6"><div class="card"><div class="card-header">`${camera.name}`</div><img class="card-img-top" src="#" alt="Card image cap"><div class="card-body"><p class="card-text">Lenses</p><p class="card-text">Price</p><p class="card-text">Description</p><a href="#" class="btn btn-primary">Détails</a></div></div></div>';
 }
 
 // choses à faire

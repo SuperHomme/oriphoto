@@ -5,48 +5,59 @@ const product = urlParams.get('product'); // insère les données dans la variab
 const apiUrl = "http://localhost:3000";
 fetch(`${apiUrl}/api/cameras/${product}`).then(response=>response.json())
 
-.then(
-(camera)=>
-{
-let cardCreation = document.getElementById('card-creation');
-let inCart = localStorage.getItem(camera._id);
+.then((camera) => {
+    let cardCreation = document.getElementById('card-creation');
+    let inCart = localStorage.getItem(camera._id);
 
-let options = "";
-for (let lense of camera.lenses) {
-    options += `<option value="${lense}">${lense}</option>`
-}
+    let options = "";
+    for (let lense of camera.lenses) {
+        options += `<option value="${lense}">${lense}</option>`
+    }
 
-const block = document.createElement("div");
-block.className = "col-sm-6"
-block.innerHTML = `
-<div class="card">
-    <div class="card-header">${camera.name}</div>
-    <img class="card-img-top" src="${camera.imageUrl}" alt="Card image cap">
-    <p class="card-text">${camera.price / 100} €</p>
-    <p class="card-text">${camera.description}</p>
-    <label for="selectLense">Sélectionner la lentille</label>
-    <div class="row">
-        <select class="form-control form-control-sm col-3" id="selectLense">${options}</select>
-        <input class="col-3" type="number" value="${inCart}" id="in-cart-count">
-        <div class="col-3">
-            <a href="cart.html" class="btn btn-primary">Panier</a>
+    const block = document.createElement("div");
+    block.className = "col-sm-6"
+    block.innerHTML = `
+        <div class="card">
+            <div class="card-header">${camera.name}</div>
+            <img class="card-img-top" src="${camera.imageUrl}" alt="Card image cap">
+            <p class="card-text">${camera.price / 100} €</p>
+            <p class="card-text">${camera.description}</p>
+            <label for="selectLense">Sélectionner la lentille</label>
+            <div class="row">
+                <select class="form-control form-control-sm col-3" id="selectLense">${options}</select>
+                <input class="col-3" type="number" value="${inCart}" id="in-cart-count">
+                <div class="col-3">
+                    <a href="cart.html" class="btn btn-primary">Panier</a>
+                </div>
+            </div>
         </div>
-    </div>
-</div>
-`
-;
-cardCreation.appendChild(block);
+    `;
+    cardCreation.appendChild(block);
 
-let inCartCount = document.getElementById('in-cart-count'); // on créé un compteur
+    let inCartCount = document.getElementById('in-cart-count'); // on créé un compteur
 
-inCartCount.addEventListener('change', function(event) { // on écoute l'événement click sur le bouton
-    event.preventDefault();
-    const select = document.getElementById("selectLense").value;
-    console.log("lentille : ", select);
-    localStorage.setItem(camera._id,inCartCount.value);
-});
+    inCartCount.addEventListener('change', function(event) { // on écoute l'événement click sur le bouton
+        event.preventDefault();
+        const select = document.getElementById("selectLense").value;
+        console.log("lentille : ", select);
+    
+        let panier = JSON.parse(localStorage.getItem("panier"));
+
+        if (panier === null) {
+            panier = [];
+        }
+
+        let item = {
+            "id" : camera._id,
+            "qty" : inCartCount.value,
+            "lense" : '0'
+        };
+        panier.push(item);
+        //localStorage.setItem(camera._id,inCartCount.value);
+        localStorage.setItem("panier", JSON.stringify(panier));
+    });
 
 
-console.log(inCart);
+    console.log(inCart);
 
 });
