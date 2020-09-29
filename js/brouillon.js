@@ -1,3 +1,18 @@
+for (let i of cart) {
+    if (product.id == cart[i].id && product.lense == cart[i].lense) {
+        console.log("comprende no");
+        cart[i].inCart = product.inCart + inCart;
+    } else {
+        cart.push(product); // on ajoute les produits au panier
+    }
+}
+
+
+
+
+
+
+
 // question à Steeve
 // QAS : "debugger", ça sert à l'écrtirue du code, le code s'arrête, c'est un outil de programmation ?
 // QAS : camera is not defined alors que le console.log fonctionne ?

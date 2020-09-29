@@ -42,18 +42,21 @@ fetch(`${apiUrl}/api/cameras/${id}`).then(response=>response.json())
     cardCreation.appendChild(block);
 
     let addToCartBtn = document.getElementById('add-to-cart-btn'); // localisation du bouton "ajouter au panier"
-    let selectLenseBtn = document.getElementById('selectLense');
-    let selectedLense = document.getElementById('selectLense').value;
-    console.log("lentille initiale : ", selectedLense);
+    let selectLenseBtn = document.getElementById('selectLense'); // localisation du la liste déroulante sur les options de lentilles
+
+    selectLenseBtn.addEventListener('change', function(event) { // changement de la lentille selectionnée
+        selectedLense = document.getElementById('selectLense').value;
+        document.getElementById('product-counter').value = 1; // A CHANGER // mettre le inCart de la lentille selectionnée
+        console.log("lentille : ", selectedLense);
+    });
 
     addToCartBtn.addEventListener('click', function(event) { // on écoute l'événement click sur le bouton "ajouter au panier"
-        event.preventDefault(); // évite que la vue saute au début de page (c'est l'ancre # qui le provoque)
+        event.preventDefault(); // évite que la vue saute au début de page (c'est l'ancre # qui le provoque)    
 
-        selectLenseBtn.addEventListener('change', function(event) { // changement de la lentille selectionnée
-            selectedLense = document.getElementById('selectLense').value;
-            console.log("lentille : ", selectedLense);
+        selectedLense = document.getElementById('selectLense').value;
+        inCart = document.getElementById('product-counter').value;
 
-            inCart = document.getElementById('product-counter').value;
+        if (inCart > 1) {
 
             let cart = JSON.parse(localStorage.getItem("cart")); // creation variable cart, qui récupérère ce qui est déjà dans le panier (cart)
 
@@ -67,18 +70,11 @@ fetch(`${apiUrl}/api/cameras/${id}`).then(response=>response.json())
                 "lense" : selectedLense
             };
 
+            console.log(cart[2].id);
+
             cart.push(product);
 
-            for (let i of cart) {
-                if (product.id == cart[i].id && product.lense == cart[i].lense) {
-                    console.log("comprende cabron");
-                } else {
-                    cart.push(product); // on ajoute les produits au panier
-                }
-            }
-
             localStorage.setItem("cart", JSON.stringify(cart));
-        });
-    });
+        }
     });
 });
