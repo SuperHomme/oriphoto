@@ -19,7 +19,7 @@ block.innerHTML = `
 <img class="card-img-top" src="${camera.imageUrl}" alt="Card image cap">
 <p class="card-text">${camera.price / 100} €</p>
 <p class="card-text">${camera.description}</p>
-<a href="pages/product.html?product=${camera._id}" class="btn btn-primary">Détails</a>
+<a href="pages/product.html?id=${camera._id}" class="btn btn-primary">Détails</a>
 </div></div>`;
 cardCreation.appendChild(block);
 }
