@@ -2,30 +2,39 @@ let cartList = document.getElementById('cart-list'); // localisation du lieu d'i
 
 let totalCost = 0;
 
+let cart = localStorage.getItem("cart"); // creation variable cart qui récupère ce qui se trouve déjà dans le panier
+cart = JSON.parse(cart); // traduit au format js
+
 const apiUrl = "http://localhost:3000";
 fetch(`${apiUrl}/api/cameras`).then(response=>response.json())
 
 .then( (cameras) => {
     totalCost = 0;
 
-    for (let product of products) {
-        let inCart = localStorage.getItem(product.id);
+    for (product of cart) {
+
+        let productId = Object.keys(cart);
+        let product = Object.entries(cart);
+        let quantity = product[0][1].quantity;
+        let lense = product[0][1].lense;
+
         // verfication de l'existence du produit en quantité > 1
-        if (!isNaN(inCart) && inCart > 0) {
+        if (!isNaN(quantity) && quantity > 0) {
+
         // generation dynamique de la liste d'article du panier
         const block = document.createElement("div");
         block.className ="row";
         block.innerHTML =
         `
-        <p class="col-2"><a href="product.html?product=${camera._id}">${camera.name}</a></p>
-        <p class="col-4">${product.lense}</p>
+        <p class="col-2"><a href="product.html?id=${camera._id}">${camera.name}</a></p>
+        <p class="col-4">${lense}</p>
         <p class="col-2">${camera.price / 100} €</p>
-        <p class="col-2">${inCart}</p>
-        <p class="col-2">${inCart * camera.price / 100} €</p>
+        <p class="col-2">${quantity}</p>
+        <p class="col-2">${quantity * camera.price / 100} €</p>
         `
         ;
         cartList.appendChild(block);// injection du code
-        totalCost = totalCost + ( inCart * camera.price / 100)
+        totalCost = totalCost + ( quantity * camera.price / 100)
     }
 }
 

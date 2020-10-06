@@ -1,3 +1,60 @@
+if (cart === null) { // si le panier n'existe pas
+                cart = [];// on crée un tableau, c'est à dire le panier
+
+                cart.push(product); // et on y met le premier produit
+                console.log("premier remplissage du panier");
+            }
+
+else { // si le panier existe
+    for (let i = 0 ; i < cart.length ; i++) {
+        if (product.id == cart[i].id) { // le produit est-il déjà présent dans le panier ?
+            console.log("le panier comporte déjà ce produit, on ajoute le chiffre au compteur à sa quantité");
+            cart[i].quantity = Number(cart[i].quantity) + Number(counter); // on additionne ce qui se trouve au compteur à la quantité déjà enregistrée pour ce produit
+        }
+        else { // sinon, on créé un nouveau produit
+            cart.push(product);
+            console.log("on créé un nouveau produit");
+        }
+        console.log("la boucle a itéré " + cart.length + " fois");
+    }
+}
+
+
+else { // si le panier existe
+    for (let i = 0 ; i < cart.length ; i++) {
+        if (product.id != cart[i].id) { // si le produit n'est pas dans le panier, on créé un nouveau produit
+            cart.push(product);
+            console.log("on créé un nouveau produit");
+        }
+        else { // sinon, on ajouter la quantité
+            console.log("le panier comporte déjà ce produit, on ajoute le chiffre au compteur à sa quantité");
+            cart[i].quantity = Number(cart[i].quantity) + Number(counter); // on additionne ce qui se trouve au compteur à la quantité déjà enregistrée pour ce produit
+        }
+        console.log("la boucle a itéré " + cart.length + " fois");
+    }
+}
+
+if (cart !== null) { // si le panier existe
+    console.log("le panier existe");
+    if(cart[product.id] != undefined) { // s'il le produit est déjà dans le panier
+        console.log("le produit est déjà dans le panier")
+        console.log(cart[product.id])
+        product.quantity = product.quantity + counter;
+    }
+}
+else { // si le panier n'existe pas
+    console.log("le panier n'existe pas, on créé le produit");
+    cart = { // on créé le produit
+        [product.id]: product
+    }
+}           
+
+/*
+    for (let lense in camera.lenses) {
+        options += `<option value="${lense}">${lense}</option>`
+    }
+*/
+
 for (let i of cart) {
     if (product.id == cart[i].id && product.lense == cart[i].lense) {
         console.log("comprende no");
@@ -6,12 +63,6 @@ for (let i of cart) {
         cart.push(product); // on ajoute les produits au panier
     }
 }
-
-
-
-
-
-
 
 // question à Steeve
 // QAS : "debugger", ça sert à l'écrtirue du code, le code s'arrête, c'est un outil de programmation ?
