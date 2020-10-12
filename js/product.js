@@ -58,22 +58,34 @@ fetch(`${apiUrl}/api/cameras/${id}`).then(response=>response.json())
             let cart = localStorage.getItem("cart"); // creation variable cart qui récupère ce qui se trouve déjà dans le panier
             cart = JSON.parse(cart); // traduit au format js
             
+            let quantity = counter
+            
             let product = { // on créé le produit qui récupère le infos de la page actuelle
                 "id" : camera._id,
-                "quantity" : counter,
-                "lense" : selectedLense // le [i] du tableau lenses
+                "lenses" : {
+                    [selectedLense] : Number(quantity),
+                 }
             };
 
             if (cart !== null) { // si le panier existe
-                console.log("le panier existe");
+                console.log("le panier existe déjà");
                 if(cart[product.id] != undefined) { // s'il le produit est déjà dans le panier
-                    console.log("le produit est déjà dans le panier")
-                    console.log(cart[product.id])
-                    product.quantity = product.quantity + counter;
+                    console.log("ce produit " + product.id + " est déjà dans le panier");
+                    if(cart[product.id].lenses[selectedLense] != undefined) { // si la lentille existe, on lui ajoute une quantité
+                        console.log("cette lentille existe dans le panier, on ajoute à la quantité déjà dedans (" + cart[product.id].lenses[selectedLense] + ") le compteur actuel (" + product.lenses[selectedLense] + ") qui passe donc à " + (cart[product.id].lenses[selectedLense] + product.lenses[selectedLense]));
+                        cart[product.id].lenses[selectedLense] = cart[product.id].lenses[selectedLense] + product.lenses[selectedLense]
+                    } else { // si la lentille n'existe pas, on augmente sa quantité
+                        console.log("cette lentille n'existait pas dans le panier, on la créée");
+                        cart[product.id].lenses[selectedLense] = product.lenses[selectedLense]; // QUESTION POUR CHRIS pourquoi cela n'écrase-t-il pas le précédent ?
+                    }
+                }
+                else { // si le produit n'est pas dans le panier, on l'ajoute
+                    console.log("le produit " + product.id + " n'était pas dans le panier");
+                    cart[product.id] = product;
                 }
             }
             else { // si le panier n'existe pas
-                console.log("le panier n'existe pas, on créé le produit");
+                console.log("le panier n'existait pas, on créé le produit");
                 cart = { // on créé le produit
                     [product.id]: product
                 }
