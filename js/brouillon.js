@@ -1,3 +1,39 @@
+    for (camera of cameras) { // affichage dynamique de la liste d'article du panier
+
+        console.log("dans la boucle");
+
+        Object.values(cart).map(product => {
+            const block = document.createElement("div");
+            block.className ="row";
+            block.innerHTML =
+                `
+                <p class="col-2"><a href="product.html?id=${camera._id}">${camera.name}</a></p>
+                <p class="col-4">${product.lenses}</p>
+                <p class="col-2">${camera.price / 100} €</p>
+                <p class="col-2">${quantity}</p>
+                <p class="col-2">${quantity * camera.price / 100} €</p>
+                `
+                ;
+            cartList.appendChild(block); // injection du code
+            totalCost = totalCost + ( quantity * camera.price / 100); // ajout du total
+        });
+    }
+
+
+
+});
+
+
+
+
+
+
+
+
+
+
+
+
 if (cart === null) { // si le panier n'existe pas
                 cart = [];// on crée un tableau, c'est à dire le panier
 

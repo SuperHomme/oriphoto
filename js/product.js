@@ -64,7 +64,7 @@ fetch(`${apiUrl}/api/cameras/${id}`).then(response=>response.json())
                 "id" : camera._id,
                 "lenses" : {
                     [selectedLense] : Number(quantity),
-                 }
+                }
             };
 
             if (cart !== null) { // si le panier existe
@@ -74,9 +74,9 @@ fetch(`${apiUrl}/api/cameras/${id}`).then(response=>response.json())
                     if(cart[product.id].lenses[selectedLense] != undefined) { // si la lentille existe, on lui ajoute une quantité
                         console.log("cette lentille existe dans le panier, on ajoute à la quantité déjà dedans (" + cart[product.id].lenses[selectedLense] + ") le compteur actuel (" + product.lenses[selectedLense] + ") qui passe donc à " + (cart[product.id].lenses[selectedLense] + product.lenses[selectedLense]));
                         cart[product.id].lenses[selectedLense] = cart[product.id].lenses[selectedLense] + product.lenses[selectedLense]
-                    } else { // si la lentille n'existe pas, on augmente sa quantité
+                    } else { // si la lentille n'existe pas, on la créé
                         console.log("cette lentille n'existait pas dans le panier, on la créée");
-                        cart[product.id].lenses[selectedLense] = product.lenses[selectedLense]; // QUESTION POUR CHRIS pourquoi cela n'écrase-t-il pas le précédent ?
+                        cart[product.id].lenses[selectedLense] = product.lenses[selectedLense]; 
                     }
                 }
                 else { // si le produit n'est pas dans le panier, on l'ajoute
