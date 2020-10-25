@@ -1,4 +1,4 @@
-const orderInformation = windows.location.search.substr(1).split('&'); // on découpe l'URL après chaque & à partir du premier caractère
+const orderInformation = window.location.search.substr(1).split('&'); // on découpe l'URL après chaque & à partir du premier caractère
 const orderId = orderInformation[0].replace('id=', '');
 const totalPrice = orderInformation[1].replace('price=', '');
 const userName = orderInformation[2].replace('user=', '');
