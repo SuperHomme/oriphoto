@@ -1,20 +1,23 @@
 let cartList = document.getElementById('cart-list'); // localisation du lieu d'injection
 
 let totalPrice = 0; // initialisation variable
+let tailleArray = 0;
+let nbArticle = 0;
 
 let cart = localStorage.getItem("cart"); // creation variable cart qui récupère ce qui se trouve déjà dans le panier
 cart = JSON.parse(cart); // traduit au format js
 
 const apiUrl = "http://localhost:3000";
 
-var bar = await new Promise((resolve, reject) => {
+let bar = new Promise((resolve, reject) => {
 
     for (const [productId, product] of Object.entries(cart)) { // pour chaque paire clef / produit des entrées du panier
 
         for (const [indexLense, quantity] of Object.entries(product.lenses)) { // pour chaque paire indexLentille / quantité
 
+            nbArticle ++;
             fetch(`${apiUrl}/api/cameras/${product.id}`).then(response=>response.json()) // récupère les infos de camera
-            .then( (camera) => {
+            .then((camera) => {
 
                 const block = document.createElement("div"); // création des éléments HTML
                 block.className ="row";
@@ -28,14 +31,15 @@ var bar = await new Promise((resolve, reject) => {
                     `;
                 cartList.appendChild(block); // injection du code
                 totalPrice = totalPrice + ( quantity * camera.price / 100); // ajout du total
+                
+                tailleArray = tailleArray + (Object.entries(Object.entries(product.lenses)).length - 1);
 
-                console.log("le totalPrice dans le fetch : " + totalPrice);
+                if ((tailleArray) >= nbArticle) {
+                    resolve();
+                }
             });
-        };        
+        };
     };
-
-    resolve();
-
 });
         
 bar.then(() => {
@@ -65,8 +69,8 @@ const city = form.elements.city;
 const email = form.elements.email;
 
 // message d'erreurs en variables
-const firstNameErrorMessage = document.getElementById('firstNameErrorMessage');
 const lastNameErrorMessage = document.getElementById('lastNameErrorMessage');
+const firstNameErrorMessage = document.getElementById('firstNameErrorMessage');
 const addressErrorMessage = document.getElementById('addressErrorMessage');
 const postalCodeErrorMessage = document.getElementById('postalCodeErrorMessage');
 const cityErrorMessage = document.getElementById('cityErrorMessage');
@@ -74,11 +78,11 @@ const emailErrorMessage = document.getElementById('emailErrorMessage');
 
 // validation des inputs
 const isNotEmpty = value => value !== "" ? true : false;
-const isLongEnough = value => value.lenght >= 2 ? true : false;
+const isLongEnough = value => value.length >= 2 ? true : false;
 const containNumber = /[0-9]/;
-const doNotContainNumber = value => !value.macth(containNumber) ? true : false;
+const doNotContainNumber = value => !value.match(containNumber) ? true : false;
 const specialCharacter = /[$&+,:;=?@#|'<>.^*()%!"{}_"]/;
-const doNotContainSpecialCharacter = value => !value.macth(specialCharacter) ? true : false;
+const doNotContainSpecialCharacter = value => !value.match(specialCharacter) ? true : false;
 const regexEmail = /.+@.+\..+/;
 const isValidEmail = (value) => value.match(regexEmail) ? true : false;
 const isValidInput = (value) => isNotEmpty(value) && isLongEnough(value) && doNotContainNumber(value) && doNotContainSpecialCharacter(value);
@@ -91,18 +95,25 @@ confirmOrderBtn.addEventListener("click", function(event) { // au clic sur le bo
 
     // conditions de validation du formulaire
     const formValidate = () => {
-        if (isValidInput(firstName.value)) {
-            firstNameErrorMessage.textContent = "";
-        } else {
-            firstNameErrorMessage.textContent = "veuillez renseigner votre prénom";
-            firstName.focus();
-            return false;
-        }
+
+        console.log(isNotEmpty(lastName.value));
+        console.log(isLongEnough(lastName.value));
+        console.log(doNotContainNumber(lastName.value));
+        console.log(doNotContainSpecialCharacter(lastName.value));
 
         if(isValidInput(lastName.value)) {
             lastNameErrorMessage.textContent = "";
         } else {
             firstNameErrorMessage.textContent = "veuillez renseigner votre nom";
+            console.log("alert lastName")
+            firstName.focus();
+            return false;
+        }
+
+        if (isValidInput(firstName.value)) {
+            firstNameErrorMessage.textContent = "";
+        } else {
+            firstNameErrorMessage.textContent = "veuillez renseigner votre prénom";
             firstName.focus();
             return false;
         }
@@ -138,9 +149,11 @@ confirmOrderBtn.addEventListener("click", function(event) { // au clic sur le bo
             email.focus();
             return false;
         }
+
+        return true;
     }
 
-    console.log(firstName.value);
+    console.log("après boucle condition validation");
 
     // stockage variables à l'intérieur
     const contact = {
@@ -170,11 +183,19 @@ confirmOrderBtn.addEventListener("click", function(event) { // au clic sur le bo
         return await response.json();
     }
 
+    console.log("tttt " + formValidate())
 
     // on vérifie que toutes les données sont bien validées
     const validForm = formValidate();
     if (validForm === true) { // await postData
         const response = postData('POST', `${apiUrl}/api/cameras/order`, cartInformation); // on envoi les données au serveur
-        windows.location = `order-confirmation.html?id=${response.orderId}&price=${totalPrice}&user=${firstName.value}`; // orderId est censé être renvoyé par le serveur
-    }
-})
+        console.log(response);
+        console.log("on est dans le post");
+        window.location.href = `order-confirmation.html?id=${response.orderId}&price=${totalPrice}&user=${firstName.value}`; // orderId est censé être renvoyé par le serveur
+    } else {
+        console.log("c'est le bronx dans les input")
+    };
+});
+
+// TODO : vider le panier après la commande
+// ToDO : bouton remove product / chgt quantité

@@ -65,27 +65,27 @@
 				<form name="frm" class="mt-5">
 					<div class="form-group">
 						<label for="lastName">Nom</label>
-						<input type="text" class="form-control" name="lastName" id="lastName" aria-describedby="lastName" pattern="[a-zA-Zéèêàïë\-]+" placeholder="exemple : Lampion">
+						<input type="text" class="form-control" name="lastName" id="lastNameErrorMessage" aria-describedby="lastName" pattern="[a-zA-Zéèêàïë\-]+" placeholder="exemple : Lampion">
 					</div>
 					<div class="form-group">
 						<label for="firstName">Prénom</label>
-						<input type="text" class="form-control" name="firstName" id="firstName" aria-describedby="firstName" pattern="[a-zA-Zéèêàïë\-]+" placeholder="exemple : Séraphin">
+						<input type="text" class="form-control" name="firstName" id="firstNameErrorMessage" aria-describedby="firstName" pattern="[a-zA-Zéèêàïë\-]+" placeholder="exemple : Séraphin">
 					</div>
 					<div class="form-group">
-						<label for="adress">Adresse</label>
-						<input type="text" class="form-control" id="address" aria-describedby="address" pattern="[a-zA-Zéèêàïë\-]+" placeholder="N° de voie, nom de la voie">
+						<label for="address">Adresse</label>
+						<input type="text" class="form-control" name="address" id="addressErrorMessage" aria-describedby="address" pattern="[0-9][a-zA-Zéèêàïë\-]+" placeholder="N° de voie, nom de la voie">
 					</div>
 					<div class="form-group">
 						<label for="postalCode">Code Postal</label>
-						<input type="text" class="form-control" id="postalCode" aria-describedby="postalCode" pattern="[0-9][0-9a-bA-B][0-9][0-9][0-9]" placeholder="exemple : 69 001">
+						<input type="text" class="form-control" name="postalCode" id="postalCodeErrorMessage" aria-describedby="postalCode" pattern="[0-9][0-9a-bA-B][0-9][0-9][0-9]" placeholder="exemple : 69 001">
 					</div>
 					<div class="form-group">
 						<label for="city">Ville</label>
-						<input type="text" class="form-control" id="city" aria-describedby="city" pattern="[a-zA-Zéèêàïë\-]+" placeholder="exemple : Moulinsart">
+						<input type="text" class="form-control" name="city" id="cityErrorMessage" aria-describedby="city" pattern="[a-zA-Zéèêàïë\-]+" placeholder="exemple : Moulinsart">
 					</div>
 					<div class="form-group">
 						<label for="email">Adresse électronique</label>
-						<input type="email" class="form-control" id="email" aria-describedby="emailHelp" pattern="[A-Za-z0-9](([_\.\-]?[a-zA-Z0-9]+)*)@([A-Za-z0-9]+)(([_\.\-]?[a-zA-Z0-9]+)*)\.([A-Za-z]{2,})" placeholder="exemple : seraphin.lampion@moulinsart.com">
+						<input type="email" class="form-control" name="email" id="emailErrorMessage" aria-describedby="emailHelp" pattern="[A-Za-z0-9](([_\.\-]?[a-zA-Z0-9]+)*)@([A-Za-z0-9]+)(([_\.\-]?[a-zA-Z0-9]+)*)\.([A-Za-z]{2,})" placeholder="exemple : seraphin.lampion@moulinsart.com">
 						<small id="emailHelp" class="form-text text-muted">Nous ne partageons vos données avec aucun autre service</small>
 					</div>
 					<div class="form-check">
@@ -93,7 +93,7 @@
 						<label class="form-check-label" for="adresse-facturation">Cette adresse est également l'adresse de facturation</label>
 					</div>
 					<button type="submit" class="btn btn-primary" id="confirm-order-btn">
-						<a href="order-confirmation.html">Confirmer la commande</a>
+						Confirmer la commande
 					</button>
 				</form>
             </div>
