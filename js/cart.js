@@ -1,8 +1,8 @@
 let cartList = document.getElementById('cart-list'); // localisation du lieu d'injection
 
 let totalPrice = 0; // initialisation variable
-let tailleArray = 0;
-let nbArticle = 0;
+let nbLense = 0;
+let nbLoop = 0;
 
 let cart = localStorage.getItem("cart"); // creation variable cart qui récupère ce qui se trouve déjà dans le panier
 cart = JSON.parse(cart); // traduit au format js
@@ -11,19 +11,20 @@ const apiUrl = "http://localhost:3000";
 
 let bar = new Promise((resolve, reject) => {
 
-    for (const [productId, product] of Object.entries(cart)) { // pour chaque paire clef / produit des entrées du panier
+    for (const [productId, product] of Object.entries(cart)) { // pour chaque paire id  / produit des entrées du panier
 
         for (const [indexLense, quantity] of Object.entries(product.lenses)) { // pour chaque paire indexLentille / quantité
 
-            nbArticle ++;
-            fetch(`${apiUrl}/api/cameras/${product.id}`).then(response=>response.json()) // récupère les infos de camera
+            nbLoop ++; // on compte le nombre de tours
+
+            fetch(`${apiUrl}/api/cameras/${product._id}`).then(response=>response.json()) // récupère les infos de camera
             .then((camera) => {
 
                 const block = document.createElement("div"); // création des éléments HTML
                 block.className ="row";
                 block.innerHTML =
                     `
-                    <p class="col-2"><a href="product.html?id=${product.id}">${camera.name}</a></p>
+                    <p class="col-2"><a href="product.html?id=${product._id}">${camera.name}</a></p>
                     <p class="col-4">${camera.lenses[indexLense]}</p>
                     <p class="col-2">${camera.price / 100} €</p>
                     <p class="col-2">${quantity}</p>
@@ -32,9 +33,9 @@ let bar = new Promise((resolve, reject) => {
                 cartList.appendChild(block); // injection du code
                 totalPrice = totalPrice + ( quantity * camera.price / 100); // ajout du total
                 
-                tailleArray = tailleArray + (Object.entries(Object.entries(product.lenses)).length - 1);
-
-                if ((tailleArray) >= nbArticle) {
+                nbLense ++; // on incrémente le nombre de lentilles différentes
+                
+                if ((nbLense) == nbLoop) {
                     resolve();
                 }
             });
@@ -53,9 +54,6 @@ bar.then(() => {
         `
         ;
         totalPricePlace.appendChild(block2);
-
-        console.log("SUPER ! le totalPrice s'affiche " + totalPrice);
-
 });
 
 let form = document.forms.frm;
@@ -95,11 +93,6 @@ confirmOrderBtn.addEventListener("click", function(event) { // au clic sur le bo
 
     // conditions de validation du formulaire
     const formValidate = () => {
-
-        console.log(isNotEmpty(lastName.value));
-        console.log(isLongEnough(lastName.value));
-        console.log(doNotContainNumber(lastName.value));
-        console.log(doNotContainSpecialCharacter(lastName.value));
 
         if(isValidInput(lastName.value)) {
             lastNameErrorMessage.textContent = "";
@@ -153,8 +146,6 @@ confirmOrderBtn.addEventListener("click", function(event) { // au clic sur le bo
         return true;
     }
 
-    console.log("après boucle condition validation");
-
     // stockage variables à l'intérieur
     const contact = {
         firstName: firstName.value,
@@ -165,37 +156,46 @@ confirmOrderBtn.addEventListener("click", function(event) { // au clic sur le bo
         email: email.value,
     }
 
+    // on change la forme du panier : on passe d'un objet à un tableau
+    const arrayCart = Object.keys(cart)
+    .map(function(key) {
+        return cart[key];
+    });
+
     // on créé objet et tableau pour recevoir les informations de la commande
     const cartInformation = {
         contact: contact,
-        products: cart
+        products: arrayCart
     }
 
     // définition de la foncion d'envoi des données à l'API
+
     const postData = async (method, url, dataElt) => { 
         const response = await fetch (url, {
             headers: {
                 'Content-Type' : 'application/json'
             },
-            method,
+            method: method,
             body: JSON.stringify(dataElt)
         })
         return await response.json();
     }
 
-    console.log("tttt " + formValidate())
-
     // on vérifie que toutes les données sont bien validées
     const validForm = formValidate();
-    if (validForm === true) { // await postData
+    if (validForm === true) {
         const response = postData('POST', `${apiUrl}/api/cameras/order`, cartInformation); // on envoi les données au serveur
-        console.log(response);
-        console.log("on est dans le post");
-        window.location.href = `order-confirmation.html?id=${response.orderId}&price=${totalPrice}&user=${firstName.value}`; // orderId est censé être renvoyé par le serveur
+        response.then(function(result) {
+            const orderId = result.orderId;
+            window.location.href = `order-confirmation.html?id=${orderId}&price=${totalPrice}&user=${firstName.value}`; // orderId est censé être renvoyé par le serveur
+        });
     } else {
-        console.log("c'est le bronx dans les input")
+        console.log("erreur")
     };
 });
 
 // TODO : vider le panier après la commande
-// ToDO : bouton remove product / chgt quantité
+// TODO : n'afficher le formulaire que si le panier existe, coir au clic sur un btn "passer commande"
+// TODO : affficher "aucun produit dans le panier" si panier vide
+// TODO : bouton remove product / chgt quantité
+// TODO : afficher dans l'ordre les produits, voire un seul produit et à côté les différentes lentilles de ce produit
