@@ -17,7 +17,7 @@ let bar = new Promise((resolve, reject) => {
 
             nbLoop ++; // on compte le nombre de tours
 
-            fetch(`${apiUrl}/api/cameras/${product._id}`).then(response=>response.json()) // récupère les infos de camera
+            fetch(`${apiUrl}/api/cameras/${productId}`).then(response=>response.json()) // récupère les infos de camera
             .then((camera) => {
 
                 const block = document.createElement("div"); // création des éléments HTML
@@ -195,7 +195,7 @@ confirmOrderBtn.addEventListener("click", function(event) { // au clic sur le bo
 });
 
 // TODO : vider le panier après la commande
-// TODO : n'afficher le formulaire que si le panier existe, coir au clic sur un btn "passer commande"
-// TODO : affficher "aucun produit dans le panier" si panier vide
+// TODO : n'afficher le formulaire que si le panier existe, voir au clic sur un btn "passer commande"
+// TODO : afficher "aucun produit dans le panier" si panier vide
 // TODO : bouton remove product / chgt quantité
 // TODO : afficher dans l'ordre les produits, voire un seul produit et à côté les différentes lentilles de ce produit

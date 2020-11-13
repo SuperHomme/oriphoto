@@ -21,17 +21,19 @@ fetch(`${apiUrl}/api/cameras/${id}`).then(response=>response.json())
         <div class="card">
             <div class="card-header">${camera.name}</div>
             <img class="card-img-top" src="${camera.imageUrl}" alt="Card image cap">
-            <p class="card-text">${camera.price / 100} €</p>
-            <p class="card-text">${camera.description}</p>
-            <label for="selectLense">Sélectionner la lentille</label>
-            <div class="row">
-                <select class="form-control form-control-sm col-3" id="selectLense">${options}</select>
-                <input class="col-3" type="number" value="${counter}" min="1" max="100" id="product-counter">
-                <div class="col-3">
-                    <a href="#" class="btn btn-primary" id="add-to-cart-btn">Ajouter au panier</a>
-                </div>
-                <div class="col-3">
-                    <a href="cart.html" class="btn btn-primary">Panier</a>
+            <div class="p-2">
+                <p class="card-text">${camera.price / 100} €</p>
+                <p class="card-text">${camera.description}</p>
+                <label for="selectLense">Sélectionner la lentille</label>
+                <div class="row d-flex justify-content-between">
+                    <select class="form-control form-control-sm col-3 ml-3" id="selectLense">${options}</select>
+                    <input class="col-2 ml-2" type="number" value="${counter}" min="1" max="100" id="product-counter">
+                    <div class="col-3">
+                        <a href="#" class="btn btn-primary" id="add-to-cart-btn">Ajouter au panier</a>
+                    </div>
+                    <div class="col-2 mr-3">
+                        <a href="cart.html" class="btn btn-primary">Panier</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -72,8 +74,8 @@ fetch(`${apiUrl}/api/cameras/${id}`).then(response=>response.json())
                 if(cart[product._id] != undefined) { // s'il le produit est déjà dans le panier
                     console.log("ce produit " + product._id + " est déjà dans le panier");
                     if(cart[product._id].lenses[selectedLense] != undefined) { // si la lentille existe, on lui ajoute une quantité
-                        console.log("cette lentille existe dans le panier, on ajoute à la quantité déjà dedans (" + cart[product.id].lenses[selectedLense] + ") le compteur actuel (" + product.lenses[selectedLense] + ") qui passe donc à " + (cart[product.id].lenses[selectedLense] + product.lenses[selectedLense]));
-                        cart[product._id].lenses[selectedLense] = cart[product.id].lenses[selectedLense] + product.lenses[selectedLense]
+                        console.log("cette lentille existe dans le panier, on ajoute à la quantité déjà dedans (" + cart[product._id].lenses[selectedLense] + ") le compteur actuel (" + product.lenses[selectedLense] + ") qui passe donc à " + (cart[product._id].lenses[selectedLense] + product.lenses[selectedLense]));
+                        cart[product._id].lenses[selectedLense] = cart[product._id].lenses[selectedLense] + product.lenses[selectedLense]
                     } else { // si la lentille n'existe pas, on la créé
                         console.log("cette lentille n'existait pas dans le panier, on la créée");
                         cart[product._id].lenses[selectedLense] = product.lenses[selectedLense]; 
